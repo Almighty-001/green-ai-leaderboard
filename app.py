@@ -88,4 +88,4 @@ st.scatter_chart(
     y="co2_kg",
     color="model",      # one color per model
     size="energy_kwh",  # bubble size = energy used
-)
+) 
