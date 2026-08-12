@@ -1,0 +1,42 @@
+# carbon-check.yml
+# -----------------
+# Runs on every push to `main`. It re-trains the models and measures
+# their carbon footprint, then uploads results.csv as a build artifact
+# so the leaderboard numbers stay fresh and auditable.
+name: carbon-check
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install codecarbon scikit-learn pandas
+
+      - name: Train models and measure carbon
+        run: python train_models.py
+
+      - name: Compute SCI scores
+        run: python sci_score.py
+
+      - name: Upload results.csv as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: carbon-results
+          path: results.csv

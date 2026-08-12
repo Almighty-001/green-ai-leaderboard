@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# CodeCarbon per-run output (results.csv is committed on purpose)
+emissions/
+
+# OS / editor
+.DS_Store
+Thumbs.db
